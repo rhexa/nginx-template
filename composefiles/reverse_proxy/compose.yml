@@ -1,0 +1,22 @@
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - 80:80
+      - 8081:8081
+    depends_on:
+      - server
+    networks:
+      - reverse-proxy
+  
+  server:
+    image: nginx
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:

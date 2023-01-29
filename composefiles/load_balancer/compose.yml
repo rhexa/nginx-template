@@ -1,0 +1,30 @@
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d:ro
+    ports:
+      - 80:80
+      - 8181:8181
+      - 8182:8182
+    depends_on:
+      - server1
+    networks:
+      - load-balancer
+  
+  server1:
+    image: httpd:alpine
+    volumes:
+      - ./server1:/usr/local/apache2/htdocs
+    networks:
+      - load-balancer
+  
+  server2:
+    image: httpd:alpine
+    volumes:
+      - ./server2:/usr/local/apache2/htdocs
+    networks:
+      - load-balancer
+
+networks:
+  load-balancer:
